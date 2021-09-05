@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from markupsafe import escape
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def hello_world():
 
 # Use escape for user provided values to protect from injection attacks
 @app.route("/<name>")
-def hello(name):
+def hello_name(name):
     return f"Hello, {escape(name)}!"
 
 
@@ -39,3 +39,9 @@ def show_post(post_id):
 def show_subpath(subpath):
     # show the subpath after /path/
     return f'Subpath {escape(subpath)}'
+
+
+@app.route('/hello/')
+@app.route('/hello/<name>')
+def hello(name=None):
+    return render_template('hello.html', name=name)
