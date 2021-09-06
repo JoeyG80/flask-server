@@ -1,20 +1,42 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, abort, jsonify
+from flask import Flask, render_template, request, make_response, redirect, url_for, abort, jsonify, session
 from markupsafe import escape
 from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = os.urandom(16)
 
 @app.route("/")
 def index():
+    if 'username' in session:
+        return f'Logged in as {session["username"]}'
     return redirect(url_for('login'))
 
+
 # Redirect for login
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     # abort(401)
-    resp = make_response(render_template('page_not_found.html'), 404)
-    resp.headers['X-Something'] = 'A value'
-    return resp
+    # resp = make_response(render_template('page_not_found.html'), 404)
+    # resp.headers['X-Something'] = 'A value'
+    # return resp
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+    return '''
+        <form method="post">
+            <p><input type=text name=username>
+            <p><input type=submit value=Login>
+        </form>
+    '''
+
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 ###################################################
 # You can specify types in the path:
