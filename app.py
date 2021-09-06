@@ -1,12 +1,17 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, make_response, redirect, url_for, abort
 from markupsafe import escape
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+def index():
+    return redirect(url_for('login'))
 
+# Redirect for login
+@app.route('/login')
+def login():
+    abort(401)
 
 ###################################################
 # You can specify types in the path:
@@ -45,3 +50,25 @@ def show_subpath(subpath):
 @app.route('/hello/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
+
+# File uploading and saving to the server
+
+# @app.route('/upload', methods=['GET', 'POST'])
+# def upload_file():
+#     if request.method == 'POST':
+#         f = request.files['the_file']
+#         f.save(f"/var/www/uploads/{secure_filename(uploaded_file.txt)}")
+
+
+#Reading cookies:
+# @app.route('/')
+# def index():
+#     username = request.cookies.get('username')
+
+# Storing cookies:
+# @app.route('/')
+# def index():
+#     resp = make_response(render_template(...))
+#     resp.set_cookie('username', 'the username')
+#     return resp
+
