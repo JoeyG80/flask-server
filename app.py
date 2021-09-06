@@ -11,7 +11,10 @@ def index():
 # Redirect for login
 @app.route('/login')
 def login():
-    return render_template('page_not_found.html'), 404
+    # abort(401)
+    resp = make_response(render_template('page_not_found.html'), 404)
+    resp.headers['X-Something'] = 'A value'
+    return resp
 
 ###################################################
 # You can specify types in the path:
