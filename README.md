@@ -1,5 +1,6 @@
 # flask-server
-# May or may not be running on http://127.0.0.1:5000/
+# Playground App for learning Flask
+## May or may not be running on http://127.0.0.1:5000/
 # 1) Install dependencies to virtual enviornment
 virtualenv .env && source .env/bin/activate && pip install -r requirements.txt
 
