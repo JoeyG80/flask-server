@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, abort
+from flask import Flask, render_template, request, make_response, redirect, url_for, abort, jsonify
 from markupsafe import escape
 from werkzeug.utils import secure_filename
 
@@ -53,6 +53,14 @@ def show_subpath(subpath):
 @app.route('/hello/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
+
+
+@app.route('/api')
+def api(name=None):
+    return jsonify({
+        "TEST": 'test',
+        "HELLO": 'hello',
+    })
 
 # File uploading and saving to the server
 
